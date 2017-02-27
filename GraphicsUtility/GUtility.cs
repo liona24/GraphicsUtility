@@ -225,20 +225,20 @@ namespace GraphicsUtility
         /// <summary>
         /// Returns the boundaries of a given collection of vectors
         /// </summary>
-        public static Rect GetBounds(Vec2[] coll)
+        public static Rect GetBounds(IEnumerable<Vec2> coll)
         {
             double l = double.MaxValue;
             double r = double.MinValue;
             double t = double.MaxValue;
             double b = double.MinValue;
-            for (int i = 0; i < coll.Length; i++)
-            {
-                if (coll[i].X < l)
-                    l = coll[i].X;
-                if (coll[i].X > r)
-                    t = coll[i].Y;
-                if (coll[i].Y > b)
-                    b = coll[i].Y;
+            foreach (var i in coll)
+            { 
+                if (i.X < l)
+                    l = i.X;
+                if (i.X > r)
+                    t = i.Y;
+                if (i.Y > b)
+                    b = i.Y;
             }
             return new Rect(l, t, r, b);
         }
@@ -246,22 +246,22 @@ namespace GraphicsUtility
         /// <summary>
         /// Returns the boundaries of a given collection of vectors
         /// </summary>
-        public static RectI GetBounds(Vec2I[] coll)
+        public static RectI GetBounds(IEnumerable<Vec2I> coll)
         {
             int l = int.MaxValue;
             int r = int.MinValue;
             int t = int.MaxValue;
             int b = int.MinValue;
-            for (int i = 0; i < coll.Length; i++)
+            foreach (var i in coll)
             {
-                if (coll[i].X < l)
-                    l = coll[i].X;
-                else if (coll[i].X > r)
-                    r = coll[i].X;
-                if (coll[i].Y < t)
-                    t = coll[i].Y;
-                else if (coll[i].Y > b)
-                    b = coll[i].Y;
+                if (i.X < l)
+                    l = i.X;
+                else if (i.X > r)
+                    r = i.X;
+                if (i.Y < t)
+                    t = i.Y;
+                else if (i.Y > b)
+                    b = i.Y;
             }
             return new RectI(l, t, r, b);
         }
