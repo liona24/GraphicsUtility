@@ -43,6 +43,7 @@
     <Compile Include="GUtility.cs" />
     <Compile Include="Matrix.cs" />
     <Compile Include="Shapes.cs" />
+    <Compile Include="Transform.cs" />
     <Compile Include="VectorInt.cs" />
     <Compile Include="VectorsDouble.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
