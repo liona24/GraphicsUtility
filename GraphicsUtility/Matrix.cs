@@ -6,7 +6,7 @@ namespace GraphicsUtility
     {
         // v0 v1
         // v2 v3
-        double[] v;
+        protected double[] v;
 
         public double this[int i] { get { return v[i]; } set { v[i] = value; } }
         public double this[int i, int j] { get { return v[j * 2 + i]; } set { v[j * 2 + i] = value; } }
@@ -14,6 +14,10 @@ namespace GraphicsUtility
         public int Width { get { return 2; } }
         public int Height { get { return 2; } }
 
+        public Matrix2(double c)
+        {
+            v = new double[] { c, c, c, c }; 
+        }
         public Matrix2(double[] values)
         {
             v = values;
@@ -51,7 +55,6 @@ namespace GraphicsUtility
             double det = Det();
             if (det == 0)
             {
-                v = new double[] { 1, 0, 0, 1 };
                 return false;
             }
             det = 1 / det;
@@ -140,7 +143,7 @@ namespace GraphicsUtility
     }
     public class Matrix3 : ICloneable
     {
-        double[] v;
+        protected double[] v;
 
         public double this[int i] { get { return v[i]; } set { v[i] = value; } }
         public double this[int i, int j] { get { return v[i * 3 + j]; } set { v[i * 3 + j] = value; } }
@@ -148,6 +151,12 @@ namespace GraphicsUtility
         public int Width { get { return 3; } }
         public int Height { get { return 3; } }
 
+        public Matrix3(double c)
+        {
+            v = new double[9];
+            for (int i = 0; i < 9; i++)
+                v[i] = c;
+        }
         public Matrix3(double[] values)
         {
             v = values;
@@ -192,7 +201,6 @@ namespace GraphicsUtility
             double det = Det();
             if (det == 0)
             {
-                v = new double[] { 1, 0, 0, 0, 1, 0, 0, 0, 1 };
                 return false;
             }
             det = 1 / det;
@@ -343,8 +351,14 @@ namespace GraphicsUtility
         public int Height { get { return 4; } }
 
         //row major order
-        double[] v;
+        protected double[] v;
 
+        public Matrix4(double c)
+        {
+            v = new double[16];
+            for (int i = 0; i < 16; i++)
+                v[i] = c;
+        }
         public Matrix4(double[][] values)
         {
             v = new double[16];
@@ -360,6 +374,10 @@ namespace GraphicsUtility
         public Matrix4(double[] values)
         {
             v = values;
+        }
+        public Matrix4(Matrix4 other)
+        {
+            v = other.v;
         }
 
         public void SetRow(int i, double[] row)
@@ -442,10 +460,6 @@ namespace GraphicsUtility
 
             if (det == 0)
             {
-                v = new double[] { 1, 0, 0, 0,
-                                    0, 1, 0, 0,
-                                    0, 0, 1, 0,
-                                    0, 0, 0, 1};
                 return false;
             }
 
@@ -728,6 +742,22 @@ namespace GraphicsUtility
         {
             for (int i = 0; i < 16; i++)
                 v[i] += r[i];
+        }
+        public void Multiply(Matrix4 r)
+        {
+            double[] v2 = new double[16];
+            int k = 0;
+            for (int i = 0; i < 4; i++)
+            {
+                for (int j = 0; j < 4; j++)
+                {
+                    v2[k++] = v[i * 4] * r[0, j] +
+                            v[i * 4 + 1] * r[1, j] +
+                            v[i * 4 + 2] * r[2, j] +
+                            v[i * 4+  3] * r[3, j];
+                }
+            }
+            v = v2;
         }
 
         public void Apply(Func<int, double> f)
